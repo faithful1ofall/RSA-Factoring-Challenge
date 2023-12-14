@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+
 gcc factors.c -o a
 ./a $1
