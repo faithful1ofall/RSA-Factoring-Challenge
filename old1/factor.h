@@ -9,6 +9,6 @@
 
 
 /* size_t getline(char **lineptr, size_t *n, FILE *stream); */
-int factorize(char *buffer);
+int factorize(long char *buffer);
 
 #endif /* FACTOR_H */

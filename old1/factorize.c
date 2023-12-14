@@ -7,11 +7,10 @@
  * Author: Thaoban Abdrasheed
  * Return: int
  */
-int factorize(char *buffer)
+int factorize(long char *buffer)
 {
-
-	u_int32_t num;
-	u_int32_t i;
+	long long num;
+	long long i;
 
 	num = atoi(buffer);
 
@@ -20,7 +19,7 @@ int factorize(char *buffer)
 	{
 		if (num % i == 0)
 		{
-			printf("%d=%d*%d\n",num,num/i,i);
+			printf("%llu=%llu*%llu\n",num,num/i,i);
 			break;
 		}
 	}
