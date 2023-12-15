@@ -1,63 +1,83 @@
-#!/usr/bin/python3
+#!/usr/bin/env bash
 
+# Pollard's Rho Algorithm for integer factorization
+pollards_rho() {
+    local n=$1
+    local x y c d
 
-import sys
-import time
+    x=$((RANDOM % (n - 1) + 1))
+    y=$x
+    c=$((RANDOM % (n - 1) + 1))
+    d=1
 
+    f() {
+        echo $(( (x * x + c) % n ))
+    }
 
-def factorize(num):
-    '''Takes a number as input.
-    Args:
-        num: input integer.
-        Return: A tuple of two factors if the number is not a prime.
-                None if the number is prime.
-    '''
-    for i in range(2, int(num**0.5)+1):
-        if num % i == 0:
-            return (i, num//i)
-    return None
+    while [ $d -eq 1 ]; do
+        x=$(f)
+        y=$(f $(f $y))
+        d=$(gcd $(( (x - y + n) % n )) $n)
+    done
 
+    echo $d
+}
 
-if __name__ == "__main__":
+# Greatest Common Divisor
+gcd() {
+    local a=$1
+    local b=$2
 
+    while [ $b -ne 0 ]; do
+        local temp=$b
+        b=$((a % b))
+        a=$temp
+    done
 
-    '''Reads the input file.
-    '''
-    if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        exit()
+    echo $a
+}
 
+# Factorize a number
+factorize() {
+    local num=$1
+    local factors=()
 
-    input_file = sys.argv[1]
+    while [ $num -gt 1 ]; do
+        factor=$(pollards_rho $num)
+        factors+=("$factor")
+        num=$((num / factor))
+    done
 
+    echo "${factors[@]}"
+}
 
-    try:
-        with open(input_file, 'r') as f:
-            lines = f.readlines()
-    except FileNotFoundError:
-        print("File not found")
-        exit()
+# Check and print factors
+check_factor() {
+    local num=$1
+    local factors=($(factorize $num))
+    local num1=${factors[0]}
+    local num2=${factors[1]:-1}
 
+    if [ $num2 -gt $num1 ]; then
+        local temp=$num1
+        num1=$num2
+        num2=$temp
+    fi
 
-    start_time = time.time()
+    echo "$num=$num1*$num2"
+}
 
+main() {
+    if [ $# -ne 1 ]; then
+        echo "Usage: $0 <file>"
+        exit 1
+    fi
 
-    '''loops over each line (which should contain one natural number per line),
-        and calls factorize on each number.
-        If factorize returns a tuple of factors,
-        it prints the factorization in the desired forma
-    '''
-    for line in lines:
-        num = int(line.strip())
-        factors = factorize(num)
-        if factors:
-            print(f"{num}={factors[0]}*{factors[1]}")
+    local input_file=$1
 
+    while read -r num; do
+        check_factor "$num"
+    done < "$input_file"
+}
 
-        '''If the elapsed time exceeds 5 seconds,
-            the program exits with an error message.
-        '''
-        if time.time() - start_time > 5:
-            print("Time limit exceeded")
-            exit()
-
+main "$@"
