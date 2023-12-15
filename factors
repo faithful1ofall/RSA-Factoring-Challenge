@@ -1,83 +1,49 @@
-#!/usr/bin/env bash
+#!/bin/bash
+# is a nice factors challenge
 
-# Pollard's Rho Algorithm for integer factorization
-pollards_rho() {
-    local n=$1
-    local x y c d
+fcheck_factor()
+{
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                count=0
+                num2=1
+                for a in ${args[*]};
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                num2=$(echo $a*$num2 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                num2=$3
+        fi
 
-    x=$((RANDOM % (n - 1) + 1))
-    y=$x
-    c=$((RANDOM % (n - 1) + 1))
-    d=1
+        num1=$2
+        num=$(echo "$1" | tr ':' '=')
 
-    f() {
-        echo $(( (x * x + c) % n ))
-    }
+        res=$(echo "if($num2 > $num1) 1 else 0" | bc)
+	        if ((res == 1)); then
+		        numcp=$num1
+		        num1=$num2
+		        num2=$numcp
+                fi
 
-    while [ $d -eq 1 ]; do
-        x=$(f)
-        y=$(f $(f $y))
-        d=$(gcd $(( (x - y + n) % n )) $n)
-    done
-
-    echo $d
+        echo "$num$num1*$num2"
 }
 
-# Greatest Common Divisor
-gcd() {
-    local a=$1
-    local b=$2
-
-    while [ $b -ne 0 ]; do
-        local temp=$b
-        b=$((a % b))
-        a=$temp
-    done
-
-    echo $a
-}
-
-# Factorize a number
-factorize() {
-    local num=$1
-    local factors=()
-
-    while [ $num -gt 1 ]; do
-        factor=$(pollards_rho $num)
-        factors+=("$factor")
-        num=$((num / factor))
-    done
-
-    echo "${factors[@]}"
-}
-
-# Check and print factors
-check_factor() {
-    local num=$1
-    local factors=($(factorize $num))
-    local num1=${factors[0]}
-    local num2=${factors[1]:-1}
-
-    if [ $num2 -gt $num1 ]; then
-        local temp=$num1
-        num1=$num2
-        num2=$temp
-    fi
-
-    echo "$num=$num1*$num2"
-}
-
-main() {
-    if [ $# -ne 1 ]; then
-        echo "Usage: $0 <file>"
+if [ $# -ne 1 ]
+then
+        echo 'Usage: factors <file>'
         exit 1
-    fi
+else
 
-    local input_file=$1
+        while read i
+        do
 
-    while read -r num; do
-        check_factor "$num"
-    done < "$input_file"
-}
+                res=$(factor "$i")
+                fcheck_factor $res
 
-main "$@"
+        done < "$1"
+fi
