@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
         mpz_init(number);
         mpz_init(counter);
         mpz_init(divisor);
+        line[nread - 1] = '\n';
 
         mpz_set_str(number, line, 10);
 
