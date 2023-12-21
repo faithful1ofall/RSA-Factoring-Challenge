@@ -9,7 +9,7 @@
 int main(int argc, char *argv[]) {
     FILE *stream;
     long long char *line = NULL;
-    size_t len = 0;
+    long long int len = 0;
     mpz_t number, counter, divisor;
     ssize_t nread;
 
