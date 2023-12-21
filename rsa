@@ -1,63 +1,32 @@
 #!/usr/bin/python3
-
-
+"""
+Factorize numbers in a file into a product of two prime numbers
+"""
 import sys
-import time
 
 
-def factorize(num):
-    '''Takes a number as input.
-    Args:
-        num: input integer.
-        Return: A tuple of two factors if the number is not a prime.
-                None if the number is prime.
-    '''
-    for i in range(2, int(num**0.5)+1):
-        if num % i == 0:
-            return (i, num//i)
-    return None
-
-
-if __name__ == "__main__":
-
-
-    '''Reads the input file.
-    '''
-    if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        exit()
-
-
-    input_file = sys.argv[1]
-
-
+def factorize():
+    """
+    A function to search file and factorize the given set of numbers into two prime numbers (format n = p*q)
+    """
     try:
-        with open(input_file, 'r') as f:
-            lines = f.readlines()
-    except FileNotFoundError:
-        print("File not found")
-        exit()
+        file = sys.argv[1]
+        with open(file) as f:
+            for line_number in f:
+                line_number = int(line_number)
+                if line_number % 2 == 0:
+                        print("{}={}*{}".format(line_number, line_number // 2, 2))
+                        continue
+                i = 3
+                while i < line_number // 2:
+                    if line_number % i == 0:
+                        print("{}={}*{}".format(line_number, line_number // i, i))
+                        break
+                    i = i + 2
+                if i == (line_number // 2) + 1:
+                    print("{}={}*{}".format(line_number, line_number, 1))
+    except (IndexError):
+        pass
 
 
-    start_time = time.time()
-
-
-    '''loops over each line (which should contain one natural number per line),
-        and calls factorize on each number.
-        If factorize returns a tuple of factors,
-        it prints the factorization in the desired forma
-    '''
-    for line in lines:
-        num = int(line.strip())
-        factors = factorize(num)
-        if factors:
-            print(f"{num}={factors[0]}*{factors[1]}")
-
-
-        '''If the elapsed time exceeds 5 seconds,
-            the program exits with an error message.
-        '''
-        if time.time() - start_time > 5:
-            print("Time limit exceeded")
-            exit()
-
+factorize()

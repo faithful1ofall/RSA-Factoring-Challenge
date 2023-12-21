@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
 
 import sys
@@ -60,3 +61,10 @@ def main():
 if __name__ == "__main__":
     main()
 
+=======
+#!/usr/bin/python3
+from factors_functions import *
+if __name__ == '__main__':
+
+    print(unix_time(print_factors))
+>>>>>>> 167f7879fbcbfada2417955454bf6e9803e8f9df
