@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     FILE *stream;
     char *line = NULL;
     size_t len = 0;
-    mpz_t number, counter;
+    mpz_t number, counter, divisor;
     ssize_t nread;
 
     if (argc != 2) {
@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
 
     mpz_init(number);
     mpz_init(counter);
+    mpz_init(divisor);
 
     stream = fopen(argv[1], "r");
     if (stream == NULL) {
@@ -30,24 +31,21 @@ int main(int argc, char *argv[]) {
     while ((nread = getline(&line, &len, stream)) != -1) {
         mpz_set_str(number, line, 10);
 
-        mpz_t divisor;
-        mpz_init(divisor);
         mpz_nextprime(divisor, divisor);
-
         mpz_mod(counter, number, divisor);
 
         if (mpz_cmp_ui(counter, 0) == 0) {
             mpz_divexact(counter, number, divisor);
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
+            break;
         }
-
-        mpz_clear(divisor);
     }
 
     free(line);
     fclose(stream);
     mpz_clear(number);
     mpz_clear(counter);
+    mpz_clear(divisor);
 
     exit(EXIT_SUCCESS);
 }
