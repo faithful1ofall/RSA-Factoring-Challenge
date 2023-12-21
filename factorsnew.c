@@ -18,10 +18,6 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    mpz_init(number);
-    mpz_init(counter);
-    mpz_init(divisor);
-
     stream = fopen(argv[1], "r");
     if (stream == NULL) {
         perror("fopen");
@@ -29,6 +25,9 @@ int main(int argc, char *argv[]) {
     }
 
     while ((nread = getline(&line, &len, stream)) != -1) {
+        mpz_init(number);
+        mpz_init(counter);
+        mpz_init(divisor);
 
         mpz_set_str(number, line, 10);
 
@@ -40,12 +39,13 @@ int main(int argc, char *argv[]) {
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
         }
         mpz_clear(divisor);
+        mpz_clear(number);
+        mpz_clear(counter);
     }
 
     free(line);
     fclose(stream);
-    mpz_clear(number);
-    mpz_clear(counter);
+    
     
     
 
