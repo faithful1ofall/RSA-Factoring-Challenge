@@ -37,7 +37,6 @@ int main(int argc, char *argv[]) {
         if (mpz_cmp_ui(counter, 0) == 0) {
             mpz_divexact(counter, number, divisor);
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
-            break;
         }
     }
 
