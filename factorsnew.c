@@ -6,12 +6,13 @@
 #include <stdio.h>
 #include <gmp.h>
 
+#define BUFFER_SIZE 4096
+
 int main(int argc, char *argv[]) {
     FILE *stream;
-    char *line = NULL;
-    size_t len = 0;
+    char buffer[BUFFER_SIZE];
     mpz_t number, counter, divisor;
-    ssize_t nread;
+    size_t nread;
 
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <file>\n", argv[0]);
@@ -24,13 +25,13 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    while ((nread = getline(&line, &len, stream)) != -1) {
-        mpz_init(number);
-        mpz_init(counter);
-        mpz_init(divisor);
-        line[nread - 1] = '\0';
+    // Initialize mpz_t variables outside the loop
+    mpz_init(number);
+    mpz_init(counter);
+    mpz_init(divisor);
 
-        mpz_set_str(number, line, 10);
+    while ((nread = fread(buffer, 1, BUFFER_SIZE, stream)) > 0) {
+        mpz_import(number, nread, 1, sizeof(buffer[0]), 0, 0, buffer);
 
         mpz_nextprime(divisor, divisor);
         mpz_mod(counter, number, divisor);
@@ -39,16 +40,14 @@ int main(int argc, char *argv[]) {
             mpz_divexact(counter, number, divisor);
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
         }
-        mpz_clear(divisor);
-        mpz_clear(number);
-        mpz_clear(counter);
     }
 
-    free(line);
+    // Clear mpz_t variables outside the loop
+    mpz_clear(divisor);
+    mpz_clear(number);
+    mpz_clear(counter);
+
     fclose(stream);
-    
-    
-    
 
     exit(EXIT_SUCCESS);
 }
