@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
     }
 
     while ((nread = getline(&line, &len, stream)) != -1) {
+
         mpz_set_str(number, line, 10);
 
         mpz_nextprime(divisor, divisor);
@@ -38,13 +39,15 @@ int main(int argc, char *argv[]) {
             mpz_divexact(counter, number, divisor);
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
         }
+        mpz_clear(divisor);
+        mpz_clear(number);
+        mpz_clear(counter);
     }
 
     free(line);
     fclose(stream);
-    mpz_clear(number);
-    mpz_clear(counter);
-    mpz_clear(divisor);
+    
+    
 
     exit(EXIT_SUCCESS);
 }
