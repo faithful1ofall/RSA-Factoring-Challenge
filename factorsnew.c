@@ -29,9 +29,10 @@ int main(int argc, char *argv[]) {
     mpz_init(number);
     mpz_init(counter);
     mpz_init(divisor);
+    i = 0;
 
     while ((nread = fread(buffer, 1, BUFFER_SIZE, stream)) > 0) {
-        mpz_import(number, nread, 1, sizeof(buffer[0]), 0, 0, buffer);
+        mpz_import(number, nread, 1, sizeof(buffer[i]), i, i, buffer);
 
         mpz_nextprime(divisor, divisor);
         mpz_mod(counter, number, divisor);
@@ -40,6 +41,7 @@ int main(int argc, char *argv[]) {
             mpz_divexact(counter, number, divisor);
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
         }
+        i++;
     }
 
     // Clear mpz_t variables outside the loop
