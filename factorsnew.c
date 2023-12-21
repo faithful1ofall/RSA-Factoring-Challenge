@@ -8,8 +8,8 @@
 
 int main(int argc, char *argv[]) {
     FILE *stream;
-    long long char *line = NULL;
-    long long int len = 0;
+    char *line = NULL;
+    size_t len = 0;
     mpz_t number, counter, divisor;
     ssize_t nread;
 
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
         mpz_init(number);
         mpz_init(counter);
         mpz_init(divisor);
+        line[nread - 1] = '\0';
 
         mpz_set_str(number, line, 10);
 
