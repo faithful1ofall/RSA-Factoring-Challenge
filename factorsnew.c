@@ -40,12 +40,12 @@ int main(int argc, char *argv[]) {
             gmp_printf("%Zd=%Zd*%Zd\n", number, counter, divisor);
         }
         mpz_clear(divisor);
-        mpz_clear(number);
-        mpz_clear(counter);
     }
 
     free(line);
     fclose(stream);
+    mpz_clear(number);
+    mpz_clear(counter);
     
     
 
