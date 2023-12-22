@@ -38,7 +38,7 @@ void algo_quadratic_sieve(char *num)
     mpz_t B, M, sieveBound, result, p, q, n;
     QuadraticSievePair pairP, pairQ;
 
-    mpz_inits(B, M, n, p, q, sieveBound, result, NULL);
+    mpz_inits(B, M, n, sieveBound, result, NULL);
     mpz_set_str(n, num, 10);
 
     // Compute B (block size) and M (square of B)
@@ -55,6 +55,7 @@ void algo_quadratic_sieve(char *num)
     // (The sieve array and additional code for this step are not shown in this snippet)
 
     // Example: Finding smooth pairs for p and q
+    mpz_t p, q;
     findSmoothPair(&pairP.x, &pairP.y, p, B);
     findSmoothPair(&pairQ.x, &pairQ.y, q, B);
 
