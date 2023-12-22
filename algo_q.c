@@ -71,5 +71,5 @@ void algo_quadratic_sieve(char *num)
         printf("Failed to factorize the number.\n");
     }
 
-    mpz_clears(B, M, sieveBound, result, NULL);
+    mpz_clears(B, M, n, sieveBound, result, NULL);
 }
