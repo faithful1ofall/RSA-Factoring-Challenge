@@ -100,7 +100,7 @@ void algo_quadratic_sieve(char *numberStr)
         printf("*");
         mpz_divexact(result, n, result);
         mpz_out_str(stdout, 10, result);
-        printf(".\n");
+        printf("\n");
     }
 
     mpz_clears(n, result, NULL);
