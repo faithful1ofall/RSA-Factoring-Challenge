@@ -33,12 +33,13 @@ void findSmoothPair(mpz_t *x, mpz_t *y, mpz_t n, mpz_t B)
     mpz_clear(temp);
 }
 
-void algo_quadratic_sieve(mpz_t n)
+void algo_quadratic_sieve(char *num)
 {
-    mpz_t B, M, sieveBound, result, p, q;
+    mpz_t B, M, sieveBound, result, p, q, n;
     QuadraticSievePair pairP, pairQ;
 
-    mpz_inits(B, M, sieveBound, result, NULL);
+    mpz_inits(B, M, n, sieveBound, result, NULL);
+    mpz_set_str(n, num, 10);
 
     // Compute B (block size) and M (square of B)
     mpz_sqrt(B, n);
