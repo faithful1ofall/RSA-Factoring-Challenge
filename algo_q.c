@@ -33,9 +33,9 @@ void findSmoothPair(mpz_t *x, mpz_t *y, mpz_t n, mpz_t B)
     mpz_clear(temp);
 }
 
-void quadraticSieveFactorization(mpz_t n)
+void algo_quadratic_sieve(mpz_t n)
 {
-    mpz_t B, M, sieveBound, result;
+    mpz_t B, M, sieveBound, result, p, q;
     QuadraticSievePair pairP, pairQ;
 
     mpz_inits(B, M, sieveBound, result, NULL);
