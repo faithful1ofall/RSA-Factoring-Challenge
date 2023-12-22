@@ -94,11 +94,10 @@ void algo_quadratic_sieve(char *numberStr)
     if (mpz_cmp_ui(result, 1) == 0 || mpz_cmp(result, n) == 0)
         printf("Failed to factorize the number.\n");
     else {
-        printf("The number ");
         mpz_out_str(stdout, 10, n);
-        printf(" is a product of the factors ");
+        printf("=");
         mpz_out_str(stdout, 10, result);
-        printf(" and ");
+        printf("*");
         mpz_divexact(result, n, result);
         mpz_out_str(stdout, 10, result);
         printf(".\n");
